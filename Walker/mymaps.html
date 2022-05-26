@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Walker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- OpenLeaflet Map components-->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+  <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,500,700|Roboto:300,400,500,700&display=swap">
+
+  <!-- Onsen UI components-->
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+  <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+
+  <!-- Local App components-->
+  <link rel="stylesheet" type="text/css" href="./style.css">
+  <script type="text/javascript" src="./script.js"></script>
+
+</head>
+
+<body>
+  <ons-navigator swipeable="force" id="myNavigator" animation="slide" page="mymaps_index.html"></ons-navigator>
+  <template id="mymaps_index.html">
+    <ons-page id="mymaps_index">
+      <section>
+        <!--<div id="app-header">
+          <div id="greeting">
+            <h3>Hello <span id="username"></span>!</h3>
+          </div>
+        </div> -->
+        <!-- Map container-->
+        <ons-row>
+          <div id="map-box" class="map-container"></div>
+        </ons-row>
+
+        <!-- Current step count and Heart rate if available -->
+        <div id="metrics">
+          <p>What do your current metrics look like?</p>
+          <ons-row>
+            <ons-col style="padding:5px; width:50%">
+              <div class="data-box">
+                <span>Step count : <span id="step-count">--</span></span>
+              </div>
+            </ons-col>
+            <ons-col style="padding:5px; width:50%">
+              <div class="data-box">
+                <span>Heart Rate : <span id="heart-rate">--</span> bpm</span>
+              </div>
+            </ons-col>
+          </ons-row>
+        </div>
+
+        <!-- Workouts -->
+        <div class="section">
+          <h4>Workouts</h4>
+          <ons-row>
+            <ons-col style="padding:5px; width:50%">
+              <ons-button id="workoutButton" onclick=toggleWorkout(this)>Start Workout</ons-button>
+            </ons-col>
+          </ons-row>
+        </div>
+
+        <ons-list>
+          <ons-list-item expandable>
+            <div class="section">
+              <h4>Previous Workouts</h4>
+            </div>
+            <div class="expandable-content">
+              <ons-row style="padding-top: 10px">
+                <ons-col width="20%" style="text-align: center; line-height: 20px;">
+                  <ons-button modifier="large--quiet" style="font-size: 3vh" onclick=previousWorkout()>
+                    <ons-icon icon="md-chevron-left"></ons-icon>
+                  </ons-button>
+                </ons-col>
+                <ons-col width="60%" style="text-align: center; line-height: 35px;">
+                  <div id='workoutName'>No workouts</div>
+                </ons-col>
+                <ons-col width="20%" style="text-align: center; line-height: 20px;">
+                  <ons-button modifier="large--quiet" style="font-size: 3vh" onclick=nextWorkout()>
+                    <ons-icon icon="md-chevron-right"></ons-icon>
+                  </ons-button>
+                </ons-col>
+              </ons-row>
+              <ons-row>
+                <ons-col style="padding:5px; width:50%">
+                  <ons-button id='loadButton'>Load</ons-button>
+                </ons-col>
+                <ons-col style="padding:5px; width:50%">
+                  <ons-button id='clearButton' onclick="clearAppData()">Clear Data</ons-button>
+                </ons-col>
+              </ons-row>
+            </div>
+          </ons-list-item>
+        </ons-list>
+      </section>
+    </ons-page>
+  </template>
+
+</body>
+
+</html>

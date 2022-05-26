@@ -1,0 +1,128 @@
+<ons-page id="foodLogger_index">
+    <!-- Show daily calorie progress -->
+    <section>
+        <div id="app-header">
+            <div id="metrics">
+                <ons-list>
+                    <ons-row style="padding-top: 10px">
+                        <ons-col width="20%" style="text-align: center; line-height: 20px;">
+                            <ons-button modifier="large--quiet" style="font-size: 3vh" onclick="getPreviousDay()">
+                                <ons-icon icon="md-chevron-left"></ons-icon>
+                            </ons-button>
+                        </ons-col>
+                        <ons-col width="60%" style="text-align: center; line-height: 35px;">
+                            <div id='loggedDay'></div>
+                        </ons-col>
+                        <ons-col width="20%" style="text-align: center; line-height: 20px;">
+                            <ons-button modifier="large--quiet" style="font-size: 3vh" onclick="getNextDay()">
+                                <ons-icon icon="md-chevron-right"></ons-icon>
+                            </ons-button>
+                        </ons-col>
+                    </ons-row>
+                </ons-list>
+
+                <ons-row>
+                    <ons-col width="80%" style="text-align: left; line-height: 20px;">
+                        <h3 style="padding-top: 10px; padding-left: 10px;">Calories Remaining</h3>
+                    </ons-col>
+                    <!-- Edit goals -->
+                    <ons-col width="20%" style="text-align: right; line-height: 15px;">
+                        <ons-button id="edit-goal" modifier="large--quiet">
+                            Edit
+                        </ons-button>
+                    </ons-col>
+                    <ons-row>
+                        <ons-col style="padding:5px; width:50%">
+                            <div class="data-box">
+                                <span>Target : <span id="daily-target">--</span> kcal</span>
+                            </div>
+                        </ons-col>
+                        <ons-col style="padding:5px; width:50%">
+                            <div class="data-box" id="current-progress-box">
+                                <span>Progress : <span id="current-progress">--</span> kcal</span>
+                            </div>
+                        </ons-col>
+                    </ons-row>
+                </ons-row>
+            </div>
+        </div>
+
+        <!-- Meal blocks -->
+        <div class="meal-blocks">
+            <ons-list>
+                <ons-list-item expandable style="background-color: inherit;">
+                        <div class="section">
+                            <p><b>Breakfast</b>&nbsp;&nbsp;&nbsp;(<span id="breakfast_total_cals">--</span>kcal)</p>
+                        </div>
+                    <hr>
+                    <!-- class expandable content - very important. Onsen uses this to expand -->
+                    <div class="expandable-content" id="breakfast_list" style="background-color: inherit;">
+                    </div>
+                </ons-list-item>
+            </ons-list>
+            <ons-row>
+                <ons-col style="padding:2px; width:50%">
+                    <ons-button id="add-breakfast" modifier="quiet">ADD FOOD</ons-button>
+                </ons-col>
+            </ons-row>
+        </div>
+
+        <div class="meal-blocks">
+            <ons-list>
+                <ons-list-item expandable style="background-color: inherit;">
+                    <div class="section">
+                        <p><b>Lunch</b>&nbsp;&nbsp;&nbsp;(<span id="lunch_total_cals">--</span>kcal)</p>
+                    </div>
+                    <hr>
+                    <!-- class expandable content - very important. Onsen uses this to expand -->
+                    <div class="expandable-content" id="lunch_list" style="background-color: inherit;">
+                    </div>
+                </ons-list-item>
+            </ons-list>
+            <ons-row>
+                <ons-col style="padding:2px; width:50%">
+                    <ons-button id="add-lunch" modifier="quiet">ADD FOOD</ons-button>
+                </ons-col>
+            </ons-row>
+        </div>
+
+        <div class="meal-blocks">
+            <ons-list>
+                <ons-list-item expandable style="background-color: inherit;">
+                    <div class="section">
+                        <p><b>Dinner</b>&nbsp;&nbsp;&nbsp;(<span id="dinner_total_cals">--</span>kcal)</p>
+                    </div>
+                    <hr>
+                    <!-- class expandable content - very important. Onsen uses this to expand -->
+                    <div class="expandable-content" id="dinner_list" style="background-color: inherit;">
+                    </div>
+                </ons-list-item>
+            </ons-list>
+            <ons-row>
+                <ons-col style="padding:2px; width:50%">
+                    <ons-button id="add-dinner" modifier="quiet">ADD FOOD</ons-button>
+                </ons-col>
+            </ons-row>
+        </div>
+
+        <div class="meal-blocks">
+            <ons-list>
+                <ons-list-item expandable style="background-color: inherit;">
+                    <div class="section">
+                        <p><b>Snacks</b>&nbsp;&nbsp;&nbsp;(<span id="snacks_total_cals">--</span>kcal)</p>
+                    </div>
+                    <hr>
+                    <!-- class expandable content - very important. Onsen uses this to expand -->
+                    <div class="expandable-content" id="snacks_list" style="background-color: inherit;">
+                    </div>
+                </ons-list-item>
+            </ons-list>
+            <ons-row>
+                <ons-col style="padding:2px; width:50%">
+                    <ons-button id="add-snack" modifier="quiet">ADD FOOD</ons-button>
+                </ons-col>
+            </ons-row>
+        </div>
+
+    </section>
+</ons-page>

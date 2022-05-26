@@ -1,0 +1,144 @@
+section {
+    height: 100vh;
+    width: 100vw;
+
+    background-color: #F3F6F6;
+    overflow-y: scroll;
+
+    font-family: 'Montserrat', sans-serif;
+}
+
+ons-row {
+    width: 100%;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+#app-header {
+    height: 10vh;
+
+    background-color: #CCD3E1;
+    border-bottom-right-radius: 50px;
+    border-top-right-radius: 50px;
+    width: 95%;
+
+    text-align: left;
+    align-items: left;
+}
+
+#greeting {
+    display: flexbox;
+    text-align: left;
+    padding: 5px;
+}
+
+#greeting h3 {
+    margin-left: 10px;
+    align-self: left;
+    vertical-align: middle;
+
+    font-family: 'Montserrat', sans-serif;
+    color: #363d60;
+}
+
+#stepCountContainer {
+    width: 100%;
+    height: 40vh;
+    border-radius: 10px;
+    display: inline-block;
+    text-align: center;
+}
+
+#dialog {
+    text-align: center;
+    padding: 10px;
+}
+
+#metrics p, #section h4 {
+    margin-left: 15px;
+    color: #363d60;
+}
+
+#workoutButton, #loadButton, #clearButton {
+    background-color: #8B9BBB;
+    
+    border-radius: 30px;
+    width: 100%;
+    height: 3em;
+    border: none;;
+
+    color: #FFFFFF;
+    font-size: 8pt;
+
+    font-family: 'Montserrat', sans-serif;
+}
+
+#workoutName {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.map-container { 
+    display: inline-flex;
+    height: 50vh;
+    width: 95%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    border-radius: 15px;
+}
+
+.map-container1 { 
+    display: inline-flex;
+    height: 50vh;
+    width: 95%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    border-radius: 15px;
+}
+
+.section h4, .section h5 {
+    margin-left: 10px;
+    align-self: left;
+    vertical-align: middle;
+
+    font-family: 'Montserrat', sans-serif;
+    color: #1A224C;
+}
+
+.expandable-content span {
+    font-family: 'Montserrat', sans-serif;
+    color: #1A224C;
+}
+
+ons-list, ons-list-item, .section {
+    background-color: #F3F6F6;
+}
+
+.data-box {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    background-image: linear-gradient(to bottom, #9ca9c6, #5B709A);
+    width: 100%;
+    height: 4em;
+    border-radius: 10px;
+
+    color: #FFFFFF;
+}
+
+.center {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.options-buttons {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    padding: auto;
+}

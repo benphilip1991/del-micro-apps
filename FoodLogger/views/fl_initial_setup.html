@@ -1,0 +1,35 @@
+<!-- Modify user calorie goals -->
+<ons-page id="foodLogger_initial_setup">
+    <ons-toolbar>
+        <div class="center">Welcome to Food Logger!</div>
+    </ons-toolbar>
+    
+    <!-- Main form - fetch user goals and save -->
+
+    <ons-row>
+        <h3>Set up your daily goals here!</h3>
+    </ons-row>
+    <ons-row>
+        <ons-col width="95%" style="text-align: left;">
+            <p>Current value : <span id="current-goal">--</span></p>    
+        </ons-col>
+    </ons-row>
+    <ons-row>
+        <ons-col><p>800</p></ons-col>
+        <ons-col width="70%">
+            <ons-range id="calorie-slider" min="800" max="3000" step="10" style="width:95%;"></ons-range>
+        </ons-col>
+        <ons-col><p>3000</p></ons-col>
+    </ons-row>
+    <ons-row>
+        <p><span id="cal-warning"></span></p>
+    </ons-row>
+
+    <ons-row style="padding-top: 5vh;">
+        <ons-col width="100%" style="text-align: center; line-height: 25px;">
+            <ons-button onclick="saveEditedUserGoals()">Done</ons-button>
+        </ons-col>    
+    </ons-row>
+    
+
+</ons-page>

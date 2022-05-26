@@ -1,0 +1,87 @@
+<!-- Breakfast component -->
+<ons-page id="foodLogger_breakfast">
+
+    <script>
+        var breakfast = [];
+
+        function addBreakfastItem() {
+            let mealItem = document.querySelector("#b_meal_item");
+            let mealCals = document.querySelector("#b_cals");
+
+            breakfast = addMealItem(mealItem, mealCals, breakfast, "breakfast");
+        }
+
+        // Save to phone memory
+        function saveBreakfast() {
+            logMeal(breakfast, "breakfast");
+            document.getElementById('app-navigator').popPage();
+        }
+    </script>
+
+    <ons-toolbar>
+        <ons-row>
+            <ons-col width="10%">
+                <div class=" left">
+                    <ons-back-button>Back</ons-back-button>
+                </div>
+            </ons-col>
+            <ons-col width="90%">
+                <div class="center"><b><span id="meal-cat">--</span></b></div>
+            </ons-col>
+        </ons-row>
+    </ons-toolbar>
+
+    <p style="text-align: center; margin-top: 10px;">
+        <ons-search-input id="breakfast_search_bar" modifier="material" style="width:90%" placeholder="Search for food">
+        </ons-search-input>
+    </p>
+
+    <!-- Main breakfast logger section. Can follow MyFitnessPal and show history - todo later -->
+    <!-- Just input and calorie value as text entries for now - will need to add more -->
+    <!-- <ons-button modifier="quiet" onclick="showToast('Meal Logged!')">Test</ons-button> -->
+
+    <div class="meal-blocks" id="logged_breakfast_list_container" style="display: none;">
+        <ons-list>
+            <ons-list-item>
+                <div class="section">
+                    <p><b>Logged items: </b></p>
+                </div>
+            </ons-list-item>
+            <div id="logged_breakfast_list"></div>
+        </ons-list>
+    </div>
+
+    <div class="meal-blocks">
+        <ons-row style="padding: 20px; margin-top: 3vh;">
+            <ons-col width="25%">
+                <label>Item : </label>
+            </ons-col>
+            <ons-col width="75%">
+                <ons-input id="b_meal_item" modifier="material"></ons-input>
+            </ons-col>
+        </ons-row>
+        <ons-row style="padding: 20px; margin-bottom: 2vh;">
+            <ons-col width="25%">
+                <label>Calories : </label>
+            </ons-col>
+            <ons-col width="75%">
+                <ons-input id="b_cals" type="number"></ons-input>
+            </ons-col>
+        </ons-row>
+        <ons-row>
+            <ons-col style="padding:2px; width:50%">
+                <ons-button modifier="quiet" onclick="addBreakfastItem()">Add</ons-button>
+            </ons-col>
+        </ons-row>
+    </div>
+
+    <!-- Only save to file when done is pressed -->
+    <ons-row style="margin-top: 10vh">
+        <ons-col width="95%">
+            <ons-button modifier="large--cta" onclick="saveBreakfast()">Done
+            </ons-button>
+        </ons-col>
+    </ons-row>
+
+
+</ons-page>
