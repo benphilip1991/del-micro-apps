@@ -3,7 +3,7 @@
  *      Tracker management, app specific contents
  * 
 **********************************************************************************************************/
-
+var breakdownChart = null;
 
 /**
  * Push the initialization page
@@ -74,23 +74,59 @@ function listMealItems(mealList, viewRoot) {
  */
 function setupDisplayedFoodLog(currentDisplayedDate) {
 
+    let mealTypes = ["breakfast", "lunch", "dinner", "snacks"];
+    let mealsToDisplay = this.currentDayProgress.meals;
+
     document.getElementById("loggedDay").innerHTML = getSummaryDateString(currentDisplayedDate);
     updateCalorieTracker();
 
     // Start setting up the index - breakfast, lunch, dinner and snacks
     // Need to calculate total for breakfast
+    mealTypes.forEach((item) => {
+        document.querySelector(`#${item}_total_cals`).innerHTML = getTotalCalories(mealsToDisplay[`${item}`]);
+        listMealItems(mealsToDisplay[`${item}`], document.querySelector(`#${item}_list`));
+    })
+
+    renderDailyBreakdown();
+}
+
+/**
+ * Render daily breakdown chart
+ * 
+ * @param {String} chartType - doughnut/bar
+ */
+function renderDailyBreakdown(chartType = "doughnut") {
+
+    var chartArea = document.querySelector("#breakdown-chart").getContext("2d");
+
     let mealsToDisplay = this.currentDayProgress.meals;
-    document.querySelector("#breakfast_total_cals").innerHTML = getTotalCalories(mealsToDisplay.breakfast);
-    document.querySelector("#lunch_total_cals").innerHTML = getTotalCalories(mealsToDisplay.lunch);
-    document.querySelector("#dinner_total_cals").innerHTML = getTotalCalories(mealsToDisplay.dinner);
-    document.querySelector("#snacks_total_cals").innerHTML = getTotalCalories(mealsToDisplay.snacks);
+    let mealLabels = ["breakfast", "lunch", "dinner", "snacks"];
+    var calData = [];
 
+    mealLabels.forEach(item => {
+        calData.push(getTotalCalories(mealsToDisplay[`${item}`]));
+    })
 
-    // Setup individual items in the displayed list
-    listMealItems(mealsToDisplay.breakfast, document.querySelector("#breakfast_list"));
-    listMealItems(mealsToDisplay.lunch, document.querySelector("#lunch_list"));
-    listMealItems(mealsToDisplay.dinner, document.querySelector("#dinner_list"));
-    listMealItems(mealsToDisplay.snacks, document.querySelector("#snacks_list"));
+    let dataSet = {
+        labels: mealLabels,
+        datasets: [{
+            label: 'Meals Breakdown',
+            backgroundColor: ['#BFEDC1', '#DB504A', '#A799B7', '#2E0F15'],
+            borderColor: ['#BFEDC1', '#DB504A', '#A799B7', '#2E0F15'],
+            data: calData
+        }]
+    };
+
+    let config = {
+        type: chartType,
+        data: dataSet
+    }
+
+    // Destroy canvas before redrawing
+    if(null != breakdownChart) {
+        breakdownChart.destroy();
+    }
+    breakdownChart = new Chart(chartArea, config);
 }
 
 /**
@@ -103,6 +139,8 @@ function updateCalorieTracker() {
 
     if(this.appData.current_daily_goals - this.appData.current_day_progress.total_cals < 0) {
         document.getElementById("current-progress-box").setAttribute("class", "data-box-warn");
+    } else {
+        document.getElementById("current-progress-box").setAttribute("class", "data-box");
     }
 }
 
@@ -113,7 +151,7 @@ function updateCalorieTracker() {
 function setCurrentCalorieGoals() {
     console.log("Getting current calorie goals");
     document.getElementById('calorie-slider').setAttribute('value', this.appData.current_daily_goals);
-    document.getElementById('current-goal').innerHTML = this.currentDayProgress.total_cals;
+    document.getElementById('current-goal').innerHTML = this.appData.current_daily_goals;
 }
 
 

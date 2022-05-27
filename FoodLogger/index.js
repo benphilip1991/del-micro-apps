@@ -17,6 +17,7 @@ var currentDisplayedDate;
 function setAppId(appId) {
 
     this.appId = appId;
+
     $.getScript("./scripts/del_interface.js");
     $.getScript("./scripts/lifecycle.js");
     $.getScript("./scripts/utils.js");

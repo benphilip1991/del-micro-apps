@@ -21,7 +21,15 @@ function saveDataToContainer(dataToStore) {
  */
 function getAppData() {
 
-    tempAppData = JSON.parse(DelUtils.getAppData(this.appId));
+    let fileData = DelUtils.getAppData(this.appId);
+    console.log(`getAppData read data : ${fileData}`);
+
+    if("undefined" === JSON.stringify(fileData)) {
+        console.log(`File contains undefined content. Reinitializing.`);
+        saveDataToContainer(this.appData); // initialize with template data.
+    }
+
+    let tempAppData = JSON.parse(fileData);
 
     if (null != tempAppData && Object.keys(tempAppData).length > 0) {
         // If the app was closed without setting up

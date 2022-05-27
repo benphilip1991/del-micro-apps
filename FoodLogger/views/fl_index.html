@@ -47,13 +47,43 @@
             </div>
         </div>
 
+        <!-- Daily breakdown -->
+        <div>
+            <ons-list>
+                <ons-list-item expandable style="background-color: inherit;">
+                    <div class="section">
+                        <p>Daily Breakdown Chart</p>
+                    </div>
+                    <!-- class expandable content - very important. Onsen uses this to expand -->
+                    <div class="expandable-content" id="breakdown" style="background-color: inherit;">
+                        <!-- Daily Breakdown chart -->
+                        <div class="daily-breakdown">
+                            <ons-row></ons-row>
+                            <ons-row>
+                                <!-- Need a chart -->
+                                <canvas id="breakdown-chart"></canvas>
+                                <ons-row></ons-row>
+                                <ons-col width="45%">
+                                    <ons-button modifier="quiet" onclick="renderDailyBreakdown('doughnut')">DOUGHNUT
+                                    </ons-button>
+                                </ons-col>
+                                <ons-col width="45%">
+                                    <ons-button modifier="quiet" onclick="renderDailyBreakdown('bar')">BAR</ons-button>
+                                </ons-col>
+                            </ons-row>
+                        </div>
+                    </div>
+                </ons-list-item>
+            </ons-list>
+        </div>
+
         <!-- Meal blocks -->
         <div class="meal-blocks">
             <ons-list>
                 <ons-list-item expandable style="background-color: inherit;">
-                        <div class="section">
-                            <p><b>Breakfast</b>&nbsp;&nbsp;&nbsp;(<span id="breakfast_total_cals">--</span>kcal)</p>
-                        </div>
+                    <div class="section">
+                        <p><b>Breakfast</b>&nbsp;&nbsp;&nbsp;(<span id="breakfast_total_cals">--</span>kcal)</p>
+                    </div>
                     <hr>
                     <!-- class expandable content - very important. Onsen uses this to expand -->
                     <div class="expandable-content" id="breakfast_list" style="background-color: inherit;">

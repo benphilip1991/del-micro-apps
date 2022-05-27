@@ -97,6 +97,22 @@ ons-row {
     align-items: left;
 }
 
+.daily-breakdown {
+    background-color: #f3f8fc;
+    border-radius: 10px;
+    width: 100%;
+
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    text-align: left;
+    align-items: left;
+
+    box-shadow: 0px 1px 15px rgb(216, 216, 216);
+}
+
 .cam-view-container { 
     display: inline-flex;
     height: 40%;
