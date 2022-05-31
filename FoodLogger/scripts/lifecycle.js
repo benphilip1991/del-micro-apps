@@ -21,36 +21,44 @@ document.addEventListener('init', (event) => {
     var page = event.target;
     if (page.id === 'foodLogger_index') {
         page.querySelector('#add-breakfast').onclick = () => {
-            document.querySelector('#app-navigator').pushPage('./views/fl_breakfast.html', {
+            document.querySelector('#app-navigator').pushPage('./views/fl_log_meals.html', {
                 data: {
-                    title: 'Breakfast'
+                    title: 'Breakfast',
+                    mealType: 'breakfast',
+                    loggedMealData: this.displayedDayProgress.meals.breakfast
                 }
             });
 
             mealSection = "Breakfast";
         };
         page.querySelector('#add-lunch').onclick = () => {
-            document.querySelector('#app-navigator').pushPage('./views/fl_lunch.html', {
+            document.querySelector('#app-navigator').pushPage('./views/fl_log_meals.html', {
                 data: {
-                    title: 'Lunch'
+                    title: 'Lunch',
+                    mealType: 'lunch',
+                    loggedMealData: this.displayedDayProgress.meals.lunch
                 }
             });
 
             mealSection = "Lunch";
         };
         page.querySelector('#add-dinner').onclick = () => {
-            document.querySelector('#app-navigator').pushPage('./views/fl_dinner.html', {
+            document.querySelector('#app-navigator').pushPage('./views/fl_log_meals.html', {
                 data: {
-                    title: 'Dinner'
+                    title: 'Dinner',
+                    mealType: 'dinner',
+                    loggedMealData: this.displayedDayProgress.meals.dinner
                 }
             });
 
             mealSection = "Dinner";
         };
         page.querySelector('#add-snack').onclick = () => {
-            document.querySelector('#app-navigator').pushPage('./views/fl_snack.html', {
+            document.querySelector('#app-navigator').pushPage('./views/fl_log_meals.html', {
                 data: {
-                    title: 'Snacks'
+                    title: 'Snacks',
+                    mealType: 'snacks',
+                    loggedMealData: this.displayedDayProgress.meals.snacks
                 }
             });
 
@@ -64,12 +72,13 @@ document.addEventListener('init', (event) => {
             });
         }
 
-    } else if (page.id === 'foodLogger_breakfast' || page.id === 'foodLogger_lunch'
-        || page.id === 'foodLogger_dinner' || page.id === 'foodLogger_snack') {
+    } else if (page.id === 'foodLogger_log_meal' ) {
 
-        init_section_title();
-        // initCamera();
+        // init_section_title();
+        setPageTitle();
+        setupPastLoggedMeals();
     }
+    // initCamera();
 });
 
 

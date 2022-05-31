@@ -75,7 +75,7 @@ function listMealItems(mealList, viewRoot) {
 function setupDisplayedFoodLog(currentDisplayedDate) {
 
     let mealTypes = ["breakfast", "lunch", "dinner", "snacks"];
-    let mealsToDisplay = this.currentDayProgress.meals;
+    let mealsToDisplay = this.displayedDayProgress.meals;
 
     document.getElementById("loggedDay").innerHTML = getSummaryDateString(currentDisplayedDate);
     updateCalorieTracker();
@@ -99,20 +99,20 @@ function renderDailyBreakdown(chartType = "doughnut") {
 
     var chartArea = document.querySelector("#breakdown-chart").getContext("2d");
 
-    let mealsToDisplay = this.currentDayProgress.meals;
-    let mealLabels = ["breakfast", "lunch", "dinner", "snacks"];
+    let mealsToDisplay = this.displayedDayProgress.meals;
+    let mealLabels = ["Breakfast", "Lunch", "Dinner", "Snacks"];
     var calData = [];
 
     mealLabels.forEach(item => {
-        calData.push(getTotalCalories(mealsToDisplay[`${item}`]));
+        calData.push(getTotalCalories(mealsToDisplay[`${item.toLowerCase()}`]));
     })
 
     let dataSet = {
         labels: mealLabels,
         datasets: [{
-            label: 'Meals Breakdown',
-            backgroundColor: ['#BFEDC1', '#DB504A', '#A799B7', '#2E0F15'],
-            borderColor: ['#BFEDC1', '#DB504A', '#A799B7', '#2E0F15'],
+            label: 'Calorie Breakdown',
+            backgroundColor: ['#15b9e6', '#15e681', '#e6ce15', '#e67e15'],
+            borderColor: ['#15b9e6', '#15e681', '#e6ce15', '#e67e15'],
             data: calData
         }]
     };
@@ -123,7 +123,7 @@ function renderDailyBreakdown(chartType = "doughnut") {
     }
 
     // Destroy canvas before redrawing
-    if(null != breakdownChart) {
+    if (null != breakdownChart) {
         breakdownChart.destroy();
     }
     breakdownChart = new Chart(chartArea, config);
@@ -134,10 +134,10 @@ function renderDailyBreakdown(chartType = "doughnut") {
  * TODO: Update displayed meals as well
  */
 function updateCalorieTracker() {
-    document.getElementById("daily-target").innerHTML = this.appData.current_daily_goals;
-    document.getElementById("current-progress").innerHTML = this.appData.current_day_progress.total_cals;
+    document.getElementById("daily-target").innerHTML = this.displayedDayProgress.target_cals;
+    document.getElementById("current-progress").innerHTML = this.displayedDayProgress.total_cals;
 
-    if(this.appData.current_daily_goals - this.appData.current_day_progress.total_cals < 0) {
+    if (this.displayedDayProgress.target_cals - this.displayedDayProgress.total_cals < 0) {
         document.getElementById("current-progress-box").setAttribute("class", "data-box-warn");
     } else {
         document.getElementById("current-progress-box").setAttribute("class", "data-box");
@@ -173,13 +173,6 @@ function saveEditedUserGoals() {
     document.querySelector('#app-navigator').popPage();
 }
 
-
-/**
- * Load previous logged meals when the user
- */
-function loadLoggedMeals(loadDay) {
-
-}
 
 /**
  * Record logged item and display in the main window
@@ -233,19 +226,36 @@ function logMeal(mealObject, mealType) {
     saveDataToContainer(appData);
 }
 
+/**
+ * Function called from the new meal logging component.
+ * Used to list the previously logged meals in a given category
+ * 
+ * @param {*} mealItemValue 
+ * @param {*} mealCalsValue 
+ */
+function listPastLoggedItems(mealItemValue, mealCalsValue) {
+
+    document.querySelector(`#logged_meal_list_container`).style = "display: block";
+    
+    let listItemNode = document.createElement("ons-list-item");
+    let listItem = document.createTextNode(`${mealItemValue}, ${mealCalsValue} kcal`);
+    listItemNode.appendChild(listItem);
+
+    document.querySelector(`#logged_meal_list`).appendChild(listItemNode);
+}
+
 
 /**
  * Append meal items to logged list and render
+ * 
  * @param {*} mealItem 
  * @param {*} mealCals 
  * @param {*} mealList 
- * @param {*} mealType 
  * @returns 
  */
-function addMealItem(mealItem, mealCals, mealList, mealType) {
+function addMealItem(mealItem, mealCals, mealList) {
 
     if (mealItem.value.length > 0 && mealCals.value.length > 0) {
-        // logMeal(mealItem.value, mealCals.value);
 
         let timeStamp = getSummaryDateString(new Date(), true, true);
         let mealObject = {
@@ -255,12 +265,7 @@ function addMealItem(mealItem, mealCals, mealList, mealType) {
         }
         mealList.push(mealObject);
 
-        document.querySelector(`#logged_${mealType}_list_container`).style = "display: block";
-
-        let listItemNode = document.createElement("ons-list-item");
-        let listItem = document.createTextNode(`${mealItem.value}, ${mealCals.value}kcal`);
-        listItemNode.appendChild(listItem);
-        document.querySelector(`#logged_${mealType}_list`).appendChild(listItemNode);
+        listPastLoggedItems(mealItem.value, mealCals.value)
 
         mealItem.value = '';
         mealCals.value = '';

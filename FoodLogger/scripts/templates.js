@@ -19,6 +19,24 @@ var currentDayProgress = {
     }
 }
 
+
+// Displayed day progress template
+// Used only for rendering.
+var displayedDayProgress = {};
+
+let dayProgressTemplate = {
+    "date": "",
+    "total_cals": 0,
+    "target_cals": 0,
+    "meals": {
+        "breakfast": [], // store several meal items
+        "lunch": [],
+        "dinner": [],
+        "snacks": []
+    }
+}
+
+
 // Meal item template
 var mealItem = {
     "timestamp": "",
