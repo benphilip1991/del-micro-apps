@@ -58,17 +58,15 @@
                     <div class="expandable-content" id="breakdown" style="background-color: inherit;">
                         <!-- Daily Breakdown chart -->
                         <div class="daily-breakdown">
-                            <ons-row></ons-row>
                             <ons-row>
-                                <!-- Need a chart -->
                                 <canvas id="breakdown-chart"></canvas>
                                 <ons-row></ons-row>
                                 <ons-col width="45%">
-                                    <ons-button modifier="quiet" onclick="renderDailyBreakdown('doughnut')">DOUGHNUT
+                                    <ons-button modifier="quiet" onclick="renderDailyBreakdown(null, 'doughnut')">DOUGHNUT
                                     </ons-button>
                                 </ons-col>
                                 <ons-col width="45%">
-                                    <ons-button modifier="quiet" onclick="renderDailyBreakdown('bar')">BAR</ons-button>
+                                    <ons-button modifier="quiet" onclick="renderDailyBreakdown(null, 'bar')">BAR</ons-button>
                                 </ons-col>
                             </ons-row>
                         </div>
@@ -92,7 +90,7 @@
             </ons-list>
             <ons-row>
                 <ons-col style="padding:2px; width:50%">
-                    <ons-button id="add-breakfast" modifier="quiet">ADD FOOD</ons-button>
+                    <ons-button id="add-breakfast" modifier="quiet">ADD/EDIT FOOD</ons-button>
                 </ons-col>
             </ons-row>
         </div>
@@ -111,7 +109,7 @@
             </ons-list>
             <ons-row>
                 <ons-col style="padding:2px; width:50%">
-                    <ons-button id="add-lunch" modifier="quiet">ADD FOOD</ons-button>
+                    <ons-button id="add-lunch" modifier="quiet">ADD/EDIT FOOD</ons-button>
                 </ons-col>
             </ons-row>
         </div>
@@ -130,7 +128,7 @@
             </ons-list>
             <ons-row>
                 <ons-col style="padding:2px; width:50%">
-                    <ons-button id="add-dinner" modifier="quiet">ADD FOOD</ons-button>
+                    <ons-button id="add-dinner" modifier="quiet">ADD/EDIT FOOD</ons-button>
                 </ons-col>
             </ons-row>
         </div>
@@ -149,7 +147,7 @@
             </ons-list>
             <ons-row>
                 <ons-col style="padding:2px; width:50%">
-                    <ons-button id="add-snack" modifier="quiet">ADD FOOD</ons-button>
+                    <ons-button id="add-snack" modifier="quiet">ADD/EDIT FOOD</ons-button>
                 </ons-col>
             </ons-row>
         </div>

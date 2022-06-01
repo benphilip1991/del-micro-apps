@@ -6,7 +6,7 @@
 
         function setPageTitle() {
             let data = document.querySelector("#app-navigator").topPage.data;
-            document.querySelector("#meal-cat").innerHTML = "Log " + data.title;
+            document.querySelector("#meal-cat").innerHTML = `Log ${data.title} (${data.date})`;
         }
 
         // List the previously logged meal items
@@ -14,17 +14,17 @@
             let data = document.querySelector("#app-navigator").topPage.data;
             console.log(`Setting up logged data --------> ${data.mealType}`)
 
-            if(data.loggedMealData.length > 0) {
+            if (data.loggedMealData.length > 0) {
                 console.log(`Injected Meals List --------> ${JSON.stringify(data.loggedMealData)}`)
 
-                data.loggedMealData.forEach(item => {
-                    listPastLoggedItems(item.item, item.calories);
+                data.loggedMealData.forEach((item, index) => {
+                    listPastLoggedItems(item.item, item.calories, index);
                 });
             }
         }
 
         // Add item to the list of 
-        function addItem(mealType) {
+        function addItem() {
             let mealItem = document.querySelector("#meal_item");
             let mealCals = document.querySelector("#cals");
 
@@ -32,10 +32,10 @@
         }
 
         // Save to phone memory
-        function saveMeal(mealType) {
-            
+        function saveMeal() {
+
             let data = document.querySelector("#app-navigator").topPage.data;
-            logMeal(mealList, data.mealType);
+            logMeal(mealList, data.mealType, data.date);
             document.getElementById('app-navigator').popPage();
         }
     </script>

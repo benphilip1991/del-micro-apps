@@ -16,6 +16,7 @@ function saveDataToContainer(dataToStore) {
 
     //forces refresh of the appData object
     getAppData();
+    setupFilteredMealData(getSummaryDateString(currentDisplayedDate));
 }
 
 
@@ -27,7 +28,7 @@ function saveDataToContainer(dataToStore) {
  */
 function getFilteredMealData(dateToFetch) {
 
-    this.displayedDayProgress = {
+    var filteredData = {
         "date": "",
         "total_cals": 0,
         "target_cals": 0,
@@ -39,16 +40,18 @@ function getFilteredMealData(dateToFetch) {
         }
     }
 
+    console.log(`Getting filtered data for : ${dateToFetch}`)
     this.appData.logged_meals.every(item => {
         if (getSummaryDateString(dateToFetch) == item.date) {
-            Object.assign(this.displayedDayProgress, item);
+            Object.assign(filteredData, item);
             return false;
         } else {
             return true; // else array.every will quit after the first run
         }
     });
 
-    setupDisplayedFoodLog(dateToFetch);
+    filteredData.date = dateToFetch;
+    return filteredData;
 }
 
 
@@ -59,7 +62,7 @@ function getFilteredMealData(dateToFetch) {
  * If the same day, currentDayProgress = displayedDayProgress
  * 
  */
-function getAppData(dateToFetch = new Date(), isCurrentDate = true) {
+function getAppData() {
 
     let fileData = DelUtils.getAppData(this.appId);
     console.log(`getAppData read data : ${fileData}`);
@@ -85,9 +88,8 @@ function getAppData(dateToFetch = new Date(), isCurrentDate = true) {
                 // ensure current values are not lost if current day
                 console.log(`Same date for stored data : ${tempAppData.current_day_progress.date}`)
                 this.currentDayProgress = tempAppData.current_day_progress;
-
                 Object.assign(this.displayedDayProgress, tempAppData.current_day_progress);
-                // this.displayedDayProgress = tempAppData.current_day_progress;
+
             } else {
 
                 // If the stored current date doesn't match today's date, reset the block.
@@ -97,9 +99,6 @@ function getAppData(dateToFetch = new Date(), isCurrentDate = true) {
                 saveDataToContainer(this.appData);
             }
         }
-
-        setupDisplayedFoodLog(new Date())
-
     } else {
         saveDataToContainer(this.appData); // initialize with template data. This is updated later
         pushFirstRun();

@@ -17,13 +17,6 @@ function pushFirstRun() {
 }
 
 /**
- * Update Meal Logger title
- */
-function init_section_title() {
-    document.getElementById("meal-cat").innerHTML = mealSection;
-}
-
-/**
  * Calculate total calories from the passed list
  * @param {Array} mealList 
  * @returns 
@@ -68,17 +61,32 @@ function listMealItems(mealList, viewRoot) {
     })
 }
 
+
+/**
+ * Setup the dashboard for a given date
+ * @param {String} dateToFetch 
+ */
+function setupFilteredMealData(dateToFetch) {
+
+    let filteredData = getFilteredMealData(dateToFetch);
+    this.displayedDayProgress = filteredData;
+
+    console.log(`setupFilteredMealData setting up data : ${JSON.stringify(filteredData)}`)
+    setupDisplayedFoodLog(filteredData)
+}
+
+
 /**
  * Setup the displayed food logs
  * On first run, initialize meals for the current day
  */
-function setupDisplayedFoodLog(currentDisplayedDate) {
+function setupDisplayedFoodLog(dataToDisplay) {
 
     let mealTypes = ["breakfast", "lunch", "dinner", "snacks"];
-    let mealsToDisplay = this.displayedDayProgress.meals;
+    let mealsToDisplay = dataToDisplay.meals;
 
-    document.getElementById("loggedDay").innerHTML = getSummaryDateString(currentDisplayedDate);
-    updateCalorieTracker();
+    document.getElementById("loggedDay").innerHTML = getSummaryDateString(dataToDisplay.date);
+    updateCalorieProgressTracker(dataToDisplay);
 
     // Start setting up the index - breakfast, lunch, dinner and snacks
     // Need to calculate total for breakfast
@@ -87,19 +95,24 @@ function setupDisplayedFoodLog(currentDisplayedDate) {
         listMealItems(mealsToDisplay[`${item}`], document.querySelector(`#${item}_list`));
     })
 
-    renderDailyBreakdown();
+    renderDailyBreakdown(dataToDisplay);
 }
+
 
 /**
  * Render daily breakdown chart
  * 
  * @param {String} chartType - doughnut/bar
  */
-function renderDailyBreakdown(chartType = "doughnut") {
+function renderDailyBreakdown(dataToDisplay, chartType = "doughnut") {
 
     var chartArea = document.querySelector("#breakdown-chart").getContext("2d");
 
-    let mealsToDisplay = this.displayedDayProgress.meals;
+    if(null == dataToDisplay) {
+        dataToDisplay = this.displayedDayProgress;
+    }
+
+    let mealsToDisplay = dataToDisplay.meals;
     let mealLabels = ["Breakfast", "Lunch", "Dinner", "Snacks"];
     var calData = [];
 
@@ -130,14 +143,18 @@ function renderDailyBreakdown(chartType = "doughnut") {
 }
 
 /**
- * Calorie management - updates the labels
- * TODO: Update displayed meals as well
+ * Calorie management - show the target and current progress for each day
  */
-function updateCalorieTracker() {
-    document.getElementById("daily-target").innerHTML = this.displayedDayProgress.target_cals;
-    document.getElementById("current-progress").innerHTML = this.displayedDayProgress.total_cals;
+function updateCalorieProgressTracker(dataToDisplay) {
 
-    if (this.displayedDayProgress.target_cals - this.displayedDayProgress.total_cals < 0) {
+    if (this.currentDayProgress.date == dataToDisplay.date) {
+        dataToDisplay.target_cals = this.appData.current_daily_goals
+    }
+
+    document.getElementById("daily-target").innerHTML = dataToDisplay.target_cals;
+    document.getElementById("current-progress").innerHTML = dataToDisplay.total_cals;
+
+    if (dataToDisplay.target_cals - dataToDisplay.total_cals < 0) {
         document.getElementById("current-progress-box").setAttribute("class", "data-box-warn");
     } else {
         document.getElementById("current-progress-box").setAttribute("class", "data-box");
@@ -173,7 +190,6 @@ function saveEditedUserGoals() {
     document.querySelector('#app-navigator').popPage();
 }
 
-
 /**
  * Record logged item and display in the main window
  * When the user submits the meal, it is also stored in the app 
@@ -181,46 +197,72 @@ function saveEditedUserGoals() {
  *  
  * @param {JSON} mealObject 
  * @param {String} mealType 
+ * @param {String} mealDate
  */
-function logMeal(mealObject, mealType) {
+function logMeal(mealObject, mealType, mealDate) {
 
-    // Build today's object and store in memory
-    currentDayProgress.date = getSummaryDateString(new Date());
-    currentDayProgress.target_cals = Number(this.appData.current_daily_goals);
-
-    var res = currentDayProgress.total_cals;
-    mealObject.forEach(item => {
-        res += Number(item.calories);
-
-        if ("breakfast" === mealType) {
-            currentDayProgress.meals.breakfast.push(item);
-        } else if ("lunch" === mealType) {
-            currentDayProgress.meals.lunch.push(item);
-        } else if ("dinner" === mealType) {
-            currentDayProgress.meals.dinner.push(item);
-        } else if ("snacks" === mealType) {
-            currentDayProgress.meals.snacks.push(item);
+    var loggedMealObject = {
+        "date": "",
+        "total_cals": 0,
+        "target_cals": 0,
+        "meals": {
+            "breakfast": [], // store several meal items
+            "lunch": [],
+            "dinner": [],
+            "snacks": []
         }
-    });
+    }
 
-    currentDayProgress.total_cals = res;
-    appData.current_day_progress = currentDayProgress;
+    console.log(`Saving ${mealType} for ${mealDate}`)
 
     // Check if a similar object exists in appData with the same date-stamp
     var recordExists = false;
     var idx = 0;
-    appData.logged_meals.forEach((item, index) => {
-        if (item.date === currentDayProgress.date) {
+    this.appData.logged_meals.forEach((item, index) => {
+        if (item.date == mealDate) {
             console.log(`Found log for the same day at index ${index}`);
             idx = index;
             recordExists = true;
+            Object.assign(loggedMealObject, item)
         }
     });
 
+
+    // Build today's object and store in memory
+    loggedMealObject.date = getSummaryDateString(mealDate);
+
+    // Only when dealing with a new object
+    // Else use the existing value (for adding to previously logged meals)
+    if(loggedMealObject.target_cals == 0) {
+        loggedMealObject.target_cals = Number(this.appData.current_daily_goals);
+    }
+
+    var res = loggedMealObject.total_cals;
+    mealObject.forEach(item => {
+        res += Number(item.calories);
+
+        if ("breakfast" === mealType) {
+            loggedMealObject.meals.breakfast.push(item);
+        } else if ("lunch" === mealType) {
+            loggedMealObject.meals.lunch.push(item);
+        } else if ("dinner" === mealType) {
+            loggedMealObject.meals.dinner.push(item);
+        } else if ("snacks" === mealType) {
+            loggedMealObject.meals.snacks.push(item);
+        }
+    });
+
+    loggedMealObject.total_cals = res;
+
+    if (mealDate == getSummaryDateString(new Date())) {
+        // this.appData.current_day_progress = loggedMealObject;
+        Object.assign(this.appData.current_day_progress, loggedMealObject)
+    }
+
     if (!recordExists) {
-        appData.logged_meals.push(currentDayProgress);
+        this.appData.logged_meals.push(loggedMealObject);
     } else {
-        appData.logged_meals[idx] = currentDayProgress;
+        this.appData.logged_meals[idx] = loggedMealObject;
     }
 
     saveDataToContainer(appData);
@@ -233,13 +275,26 @@ function logMeal(mealObject, mealType) {
  * @param {*} mealItemValue 
  * @param {*} mealCalsValue 
  */
-function listPastLoggedItems(mealItemValue, mealCalsValue) {
+function listPastLoggedItems(mealItemValue, mealCalsValue, listIndex) {
 
     document.querySelector(`#logged_meal_list_container`).style = "display: block";
-    
+
     let listItemNode = document.createElement("ons-list-item");
-    let listItem = document.createTextNode(`${mealItemValue}, ${mealCalsValue} kcal`);
-    listItemNode.appendChild(listItem);
+    listItemNode.setAttribute("tappable");
+
+    let listItemGestureDetector = document.createElement("ons-gesture-detector");
+
+    let listItemSpan = document.createElement("span");
+    listItemSpan.setAttribute("class", "loggedItem");
+    listItemSpan.setAttribute("itemIndex", listIndex);
+    listItemSpan.setAttribute("mealItemValue", mealItemValue);
+    listItemSpan.setAttribute("mealCalsValue", mealCalsValue);
+
+    let mealsListing = document.createTextNode(`${mealItemValue}  (${mealCalsValue})`);
+
+    listItemSpan.appendChild(mealsListing);
+    listItemGestureDetector.appendChild(listItemSpan);
+    listItemNode.appendChild(listItemGestureDetector);
 
     document.querySelector(`#logged_meal_list`).appendChild(listItemNode);
 }
@@ -265,7 +320,7 @@ function addMealItem(mealItem, mealCals, mealList) {
         }
         mealList.push(mealObject);
 
-        listPastLoggedItems(mealItem.value, mealCals.value)
+        listPastLoggedItems(mealItem.value, mealCals.value, mealList.length - 1);
 
         mealItem.value = '';
         mealCals.value = '';

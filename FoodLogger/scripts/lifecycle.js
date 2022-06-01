@@ -7,8 +7,9 @@ function initApp() {
 
     // Check for any stored user preferences. If not, run init
     getAppData();
-
-    setupDisplayedFoodLog(currentDisplayedDate = new Date());
+    
+    currentDisplayedDate = new Date();
+    setupFilteredMealData(getSummaryDateString(currentDisplayedDate));
 }
 
 /**
@@ -16,7 +17,7 @@ function initApp() {
  */
 document.addEventListener('init', (event) => {
 
-    initApp(); // fetch app data and initialize
+    // initApp(); // fetch app data and initialize
 
     var page = event.target;
     if (page.id === 'foodLogger_index') {
@@ -25,7 +26,8 @@ document.addEventListener('init', (event) => {
                 data: {
                     title: 'Breakfast',
                     mealType: 'breakfast',
-                    loggedMealData: this.displayedDayProgress.meals.breakfast
+                    loggedMealData: this.displayedDayProgress.meals.breakfast,
+                    date: getSummaryDateString(currentDisplayedDate)
                 }
             });
 
@@ -36,7 +38,8 @@ document.addEventListener('init', (event) => {
                 data: {
                     title: 'Lunch',
                     mealType: 'lunch',
-                    loggedMealData: this.displayedDayProgress.meals.lunch
+                    loggedMealData: this.displayedDayProgress.meals.lunch,
+                    date: getSummaryDateString(currentDisplayedDate)
                 }
             });
 
@@ -47,7 +50,8 @@ document.addEventListener('init', (event) => {
                 data: {
                     title: 'Dinner',
                     mealType: 'dinner',
-                    loggedMealData: this.displayedDayProgress.meals.dinner
+                    loggedMealData: this.displayedDayProgress.meals.dinner,
+                    date: getSummaryDateString(currentDisplayedDate)
                 }
             });
 
@@ -58,7 +62,8 @@ document.addEventListener('init', (event) => {
                 data: {
                     title: 'Snacks',
                     mealType: 'snacks',
-                    loggedMealData: this.displayedDayProgress.meals.snacks
+                    loggedMealData: this.displayedDayProgress.meals.snacks,
+                    date: getSummaryDateString(currentDisplayedDate)
                 }
             });
 
@@ -83,6 +88,20 @@ document.addEventListener('init', (event) => {
 
 
 /**
+ * Tap event listener
+ */
+document.addEventListener('tap', (event) => {
+    let item = event.target
+
+    // Only possible from the add/edit meals page
+    // Set the elements with the values
+    if(item.matches(".loggedItem")) {
+        showToast(`Item tapped : ${JSON.stringify(item.getAttribute("itemIndex"))}`)
+    }
+})
+
+
+/**
  * Handle onsen stack events
  */
 // Perform after pushing a view into the viewport
@@ -97,6 +116,8 @@ document.addEventListener('postpush', (event) => {
     } else if ("foodLogger_edit_goals" == pushed_page) {
         attachGoalSliderListener();
         setCurrentCalorieGoals();
+    } else if("foodLogger_index" == pushed_page) {
+        initApp();
     }
 });
 
@@ -105,7 +126,7 @@ document.addEventListener('postpop', (event) => {
     let current_page = document.querySelector("#app-navigator").topPage.id
     console.log(`Back to page : ${current_page}`)
     if ("foodLogger_index" == current_page) {
-        setupDisplayedFoodLog(new Date());
+        setupFilteredMealData(getSummaryDateString(currentDisplayedDate))
     }
 });
 

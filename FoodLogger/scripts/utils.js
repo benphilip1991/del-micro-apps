@@ -35,7 +35,7 @@ function getPreviousDay() {
     currentDisplayedDate.setDate(currentDisplayedDate.getDate() - 1);
     document.getElementById("loggedDay").innerHTML = getSummaryDateString(currentDisplayedDate);
  
-    getFilteredMealData(getSummaryDateString(currentDisplayedDate));
+    setupFilteredMealData(getSummaryDateString(currentDisplayedDate));
 }
 
 /**
@@ -45,7 +45,7 @@ function getNextDay() {
     currentDisplayedDate.setDate(currentDisplayedDate.getDate() + 1);
     document.getElementById("loggedDay").innerHTML = getSummaryDateString(currentDisplayedDate);
 
-    getFilteredMealData(getSummaryDateString(currentDisplayedDate))
+    setupFilteredMealData(getSummaryDateString(currentDisplayedDate))
 }
 
 /**

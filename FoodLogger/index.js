@@ -18,9 +18,9 @@ function setAppId(appId) {
 
     this.appId = appId;
 
-    $.getScript("./scripts/del_interface.js");
-    $.getScript("./scripts/lifecycle.js");
-    $.getScript("./scripts/utils.js");
-    $.getScript("./scripts/tracker.js");
-    $.getScript("./scripts/templates.js");
+    // $.getScript("./scripts/del_interface.js");
+    // $.getScript("./scripts/lifecycle.js");
+    // $.getScript("./scripts/utils.js");
+    // $.getScript("./scripts/tracker.js");
+    // $.getScript("./scripts/templates.js");
 }
