@@ -1,0 +1,181 @@
+<ons-page id="mymoods_daily_update">
+    <script>
+        var data;
+        function setMoodTitle() {
+            data = document.querySelector("#app-navigator").topPage.data;
+            document.querySelector("#mood_type").innerHTML = data.title;
+        }
+    </script>
+
+    <ons-toolbar>
+        <ons-row>
+            <ons-col width="10%">
+                <div class="left">
+                    <ons-back-button>Back</ons-back-button>
+                </div>
+            </ons-col>
+            <ons-col width="75%">
+                <div class="left"><span id="mood_type" style="font-size: 25pt; margin-left: 3vw;">--</span></div>
+            </ons-col>
+            <ons-col width="15%">
+                <div class="right" style="font-size: 8pt;">
+                    <ons-toolbar-button onclick="storeMoodRecords(displayedDayProgress)">Save</ons-toolbar-button>
+                </div>
+            </ons-col>
+        </ons-row>
+    </ons-toolbar>
+
+    <!-- Main content -->
+    <div class="screen_middle" style="position: relative; top:2%;">
+        <h3 style="font-family: 'Montserrat', sans-serif;">What have you been up to?</h2>
+    </div>
+
+    <br>
+    <div class="activity-blocks">
+        <ons-list>
+            <ons-list-item expandable style="background-color: inherit;" expanded>
+                <div class="section">
+                    <p><b>Social</b></p>
+                </div>
+                <hr>
+                <!-- class expandable content - very important. Onsen uses this to expand -->
+                <div class="expandable-content" id="social_list" style="background-color: inherit;">
+                    <ons-row >
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_family">👨‍👩‍👧‍👦</button>
+                            <label class="activity_label">family</label>
+                        </ons-col>
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_friends">👯</button>
+                            <label class="activity_label">friends</label>
+                        </ons-col>
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_date">❤️</button>
+                            <label class="activity_label">date</label>
+                        </ons-col>
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_party">🕺</button>
+                            <label class="activity_label">party</label>
+                        </ons-col>
+                    </ons-row>
+                </div>
+            </ons-list-item>
+        </ons-list>
+        <br>
+    </div>
+
+    <!-- Food -->
+    <div class="activity-blocks">
+        <ons-list>
+            <ons-list-item expandable style="background-color: inherit;" expanded>
+                <div class="section">
+                    <p><b>Food</b></p>
+                </div>
+                <hr>
+                <!-- class expandable content - very important. Onsen uses this to expand -->
+                <div class="expandable-content" id="food_list" style="background-color: inherit;">
+                    <ons-row >
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_eat_healthy">🥗</button>
+                            <label class="activity_label">eat healthy</label>
+                        </ons-col>
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_fast_food">🍟</button>
+                            <label class="activity_label">fast food</label>
+                        </ons-col>
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_homemade">🏠</button>
+                            <label class="activity_label">homemade</label>
+                        </ons-col>
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_restaurant">👨‍🍳</button>
+                            <label class="activity_label">restaurant</label>
+                        </ons-col>
+                    </ons-row>
+                    <ons-row><br></ons-row><ons-row><br></ons-row>
+                    <ons-row>
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_delivery">🥡</button>
+                            <label class="activity_label">delivery</label>
+                        </ons-col>
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_no_meat">🥩</button>
+                            <label class="activity_label">no meat</label>
+                        </ons-col>
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_no_sweets">🧁</button>
+                            <label class="activity_label">no sweets</label>
+                        </ons-col>
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_no_soda">🥤</button>
+                            <label class="activity_label">no soda</label>
+                        </ons-col>
+                    </ons-row>
+                </div>
+            </ons-list-item>
+        </ons-list>
+        <br>
+    </div>
+
+    <!-- Health -->
+    <div class="activity-blocks">
+        <ons-list>
+            <ons-list-item expandable style="background-color: inherit;" expanded>
+                <div class="section">
+                    <p><b>Health</b></p>
+                </div>
+                <hr>
+                <!-- class expandable content - very important. Onsen uses this to expand -->
+                <div class="expandable-content" id="health_list" style="background-color: inherit;">
+                    <ons-row >
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_exercise">🏋️‍♂️</button>
+                            <label class="activity_label">exercise</label>
+                        </ons-col>
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_drink_water">🚰</button>
+                            <label class="activity_label">drink water</label>
+                        </ons-col>
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_walk">🚶</button>
+                            <label class="activity_label">walk</label>
+                        </ons-col>
+                        <ons-col class="grouping" isSelected="false">
+                            <button onclick="activitySelect(this, this.id)" class="activity_button" id="btn_meditate">🧘</button>
+                            <label class="activity_label">meditate</label>
+                        </ons-col>
+                    </ons-row>
+                </div>
+            </ons-list-item>
+        </ons-list>
+        <br>
+    </div>
+
+
+    <!-- Notes -->
+    <div class="activity-blocks">
+        <ons-list>
+            <ons-list-item expandable style="background-color: inherit;">
+                <div class="section">
+                    <p><b>Notes</b></p>
+                </div>
+                <hr>
+                <!-- class expandable content - very important. Onsen uses this to expand -->
+                <div class="expandable-content" id="social_list" style="background-color: inherit;">
+                    <ons-row >
+                        <ons-col width="100%">
+                            <ons-input id="note" modifier="material" style="width: 95%;" placeholder="Add Note"></ons-input>
+                        </ons-col>
+                    </ons-row>
+                    <ons-row></ons-row>
+                    <ons-row>
+                        <ons-col style="padding:2px; width:50%">
+                            <ons-button id="done-note" modifier="quiet">DONE</ons-button>
+                        </ons-col>
+                    </ons-row>
+                </div>
+            </ons-list-item>
+        </ons-list>
+    </div>
+
+</ons-page>

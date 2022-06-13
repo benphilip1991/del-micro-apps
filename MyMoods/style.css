@@ -1,0 +1,178 @@
+section {
+    height: 100vh;
+    width: 100vw;
+
+    background-color: #ebebeb;
+    overflow-y: scroll;
+
+    font-family: 'Montserrat', sans-serif;
+}
+
+hr {
+    border-top: .1px #afafaf;
+    width:95%;
+}
+
+#app-header {
+    background-color: #ffffff;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    width: 100%;
+
+    text-align: left;
+    align-items: left;
+    
+    position: sticky; 
+    position: -webkit-sticky; 
+    top: 0; 
+    z-index: 99
+}
+
+#greeting {
+    display: flexbox;
+    text-align: left;
+    padding: 5px;
+}
+
+#greeting h3 {
+    margin-left: 10px;
+    align-self: left;
+    vertical-align: middle;
+
+    font-family: 'Montserrat', sans-serif;
+    color: #363d60;
+}
+
+
+#dialog {
+    text-align: center;
+    padding: 10px;
+}
+
+
+section h3, section h4, section h5 {
+    margin-left: 10px;
+    align-self: left;
+    vertical-align: middle;
+
+    font-family: 'Montserrat', sans-serif;
+    color: #1A224C;
+}
+
+
+ons-list, ons-list-item, section {
+    background-color: #F3F6F6;
+}
+
+
+.center {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.options-buttons {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    padding: auto;
+}
+
+h3, h2, h1, p {
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+ons-row {
+    width: 100%;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+ons-list {
+    background-color: inherit;
+    border-radius: inherit;
+}
+
+ons-list-item {
+    background-color: inherit;
+}
+
+div {
+    font-family: 'Montserrat', sans-serif;
+}
+
+span {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.left {
+    text-align: left;
+}
+
+div.screen_middle {
+    position: relative;
+    top: 20%;
+    text-align: center;
+    color: #4D4D4D;
+}
+
+div.screen_bottom {
+    position: relative;
+    top: 50%;
+    text-align: center;
+    color: #4D4D4D;
+}
+
+
+.mood_button {
+    margin-top: 10%;
+    font-size: 11vw;
+    width: fit-content;
+    border: none;
+}
+
+.activity_button {
+    font-size: 9vw;
+    width: fit-content;
+    border: none;
+    background: none;
+}
+
+.grouping {
+    display: inline-block;
+    text-align: center;
+    width: 9vw;
+}
+
+.grouping-selected {
+    display: inline-block;
+    text-align: center;
+    border-radius: 20%;
+    width: 9vw;
+    background-color: #e2e2e2;
+}
+
+.activity_label {
+    font-size: 9pt;
+    display: block;
+}
+
+.activity-blocks {
+    background-color: #ffffff;
+    border-radius: 10px;
+    width: 95%;
+
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    text-align: left;
+    align-items: left;
+
+    box-shadow: 1px 3px 6px 0.5px #9c9c9c;
+}
+

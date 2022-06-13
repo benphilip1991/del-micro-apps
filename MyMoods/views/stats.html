@@ -1,0 +1,63 @@
+<ons-page id="mymoods_stats">
+
+    <script>
+        function setupDate(displayedDate = this.currentDisplayedDate) {
+            document.querySelector("#loggedDay").innerHTML = getSummaryDateString(displayedDate)
+        }
+    </script>
+
+    <!-- Show daily mood stats -->
+    <div id="app-header" style="position: sticky; position: -webkit-sticky; top: 0; z-index: 99">
+        <div id="metrics">
+            <ons-list>
+                <ons-row style="padding-top: 10px">
+                    <ons-col width="10%" style="text-align: center; line-height: 20px;">
+                        <ons-button modifier="large--quiet" style="font-size: 3vh" onclick="getPreviousDay()">
+                            <ons-icon icon="md-chevron-left"></ons-icon>
+                        </ons-button>
+                    </ons-col>
+                    <ons-col width="80%" style="text-align: center; line-height: 35px;">
+                        <div id='loggedDay'></div>
+                    </ons-col>
+                    <ons-col width="10%" style="text-align: center; line-height: 20px;">
+                        <ons-button modifier="large--quiet" style="font-size: 3vh" onclick="getNextDay()">
+                            <ons-icon icon="md-chevron-right"></ons-icon>
+                        </ons-button>
+                    </ons-col>
+                </ons-row>
+            </ons-list>
+        </div>
+    </div>
+
+    <div class="activity-blocks">
+        <ons-list>
+            <ons-list-item expandable expanded style="background-color: inherit;">
+                <div class="section">
+                    <p>Monthly Mood Chart</p>
+                </div>
+                <!-- class expandable content - very important. Onsen uses this to expand -->
+                <div class="expandable-content" style="background-color: inherit;">
+                    <ons-row>
+                        <canvas id="monthly-mood-chart"></canvas>
+                        <ons-row></ons-row>
+                    </ons-row>
+                </div>
+            </ons-list-item>
+        </ons-list>
+    </div>
+
+    <div class="activity-blocks">
+        <ons-list>
+            <ons-list-item expandable expanded style="background-color: inherit;">
+                <div class="section">
+                    <p>Mood Count</p>
+                </div>
+                <div class="expandable-content" style="background-color: inherit;">
+                    <ons-row>
+                        <canvas id="mood-count-chart"></canvas>
+                    </ons-row>
+                </div>
+            </ons-list-item>
+        </ons-list>
+    </div>
+</ons-page>
