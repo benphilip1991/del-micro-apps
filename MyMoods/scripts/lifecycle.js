@@ -6,9 +6,6 @@ function initApp() {
     // get app data and get started
     getAppData();
     this.currentDisplayedDate = new Date();
-
-    // Need to read from the app file to check for data -- read and assign
-    setupFilteredMoodData(getSummaryDateString(currentDisplayedDate));
 }
 
 
@@ -21,7 +18,8 @@ document.addEventListener('init', (event) => {
 
     // first template loaded through the launch page
     if (page.id === 'mymoods_daily_log') {
-        document.querySelector("#date_today").innerHTML = getSummaryDateString(this.currentDisplayedDate);
+        var pastRecord = document.querySelector("#app-navigator").topPage.data.past_record;
+        document.querySelector("#date_today").innerHTML = getPrettifiedDateString(this.currentDisplayedDate);
 
         page.querySelector('#btn_rad').onclick = () => {
             moodSelect("rad");
@@ -29,7 +27,7 @@ document.addEventListener('init', (event) => {
                 data: {
                     title: '😄',
                     mood: 'rad',
-                    date: getSummaryDateString(currentDisplayedDate)
+                    date: getSummaryDateString(this.currentDisplayedDate)
                 }
             });
         };
@@ -39,7 +37,7 @@ document.addEventListener('init', (event) => {
                 data: {
                     title: '🙂',
                     mood: 'good',
-                    date: getSummaryDateString(currentDisplayedDate)
+                    date: getSummaryDateString(this.currentDisplayedDate)
                 }
             });
         };
@@ -49,7 +47,7 @@ document.addEventListener('init', (event) => {
                 data: {
                     title: '😐',
                     mood: 'meh',
-                    date: getSummaryDateString(currentDisplayedDate)
+                    date: getSummaryDateString(this.currentDisplayedDate)
                 }
             });
         };
@@ -59,7 +57,7 @@ document.addEventListener('init', (event) => {
                 data: {
                     title: '🙁',
                     mood: 'bad',
-                    date: getSummaryDateString(currentDisplayedDate)
+                    date: getSummaryDateString(this.currentDisplayedDate)
                 }
             });
         };
@@ -69,14 +67,15 @@ document.addEventListener('init', (event) => {
                 data: {
                     title: '😖',
                     mood: 'awful',
-                    date: getSummaryDateString(currentDisplayedDate)
+                    date: getSummaryDateString(this.currentDisplayedDate)
                 }
             });
         };
         page.querySelector('#btn_continue').onclick = () => {
-            document.querySelector('#app-navigator').pushPage('./views/stats.html', {
+            document.querySelector('#app-navigator').resetToPage('./views/stats.html', {
                 data: {
-                    date: getSummaryDateString(currentDisplayedDate)
+                    date: getSummaryDateString(this.currentDisplayedDate),
+                    is_first_launch: false
                 }
             });
         };
@@ -84,14 +83,22 @@ document.addEventListener('init', (event) => {
     } else if (page.id === "mymoods_daily_update") {
 
         setMoodTitle();
+
     } else if (page.id === "mymoods_stats") {
 
+        // Called whenever the page is initialized after rendering in the viewport
+        setupFilteredMoodData(getSummaryDateString(currentDisplayedDate), false);
+        renderMoodCount();
+        renderMonthlyMoodChart();
+
         setupDate(this.currentDisplayedDate);
+        
+        // Click listener for the stats page date - allow edits
         page.querySelector('#loggedDay').onclick = () => {
             document.querySelector('#app-navigator').pushPage('./views/daily_log.html', {
                 data: {
-                    date: getSummaryDateString(currentDisplayedDate),
-                    pastRecord: this.displayedDayProgress
+                    date: getSummaryDateString(this.currentDisplayedDate),
+                    past_record: this.displayedDayProgress
                 }
             });
         };
@@ -103,19 +110,14 @@ document.addEventListener('init', (event) => {
  */
 document.addEventListener('postpush', (event) => {
     let pushed_page = document.querySelector("#app-navigator").topPage
-    console.log(`Subsequent Launch : ${pushed_page.data.subsequent_launch}`)
 
     if ("mymoods_stats" == pushed_page.id) {
 
-        if (!pushed_page.data.subsequent_launch) {
-            // setupDate(this.currentDisplayedDate);
+        console.log(`Is First Launch : ${pushed_page.data.is_first_launch}`)
+        if (typeof pushed_page.data.is_first_launch == "undefined") {
+            console.log(`Initializing App`)
             initApp();
-        } 
-        renderMoodCount();
-        renderMonthlyMoodChart();
-
-    } else if ("mymoods_daily_log" == pushed_page.id) {
-        document.querySelector("#date_today").innerHTML = getSummaryDateString(this.currentDisplayedDate);
+        }
     } else if ("mymoods_daily_update" == pushed_page.id) {
 
         // need to setup the buttons and views

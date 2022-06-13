@@ -9,7 +9,7 @@ var moodCountChart = null;
  * Setup the dashboard for a given date
  * @param {String} dateToFetch 
  */
-function setupFilteredMoodData(dateToFetch, isDataSaved = false) {
+function setupFilteredMoodData(dateToFetch, isDataSaved) {
 
     let filteredData = getFilteredMoodData(dateToFetch);
     this.displayedDayProgress = filteredData;
@@ -22,23 +22,24 @@ function setupFilteredMoodData(dateToFetch, isDataSaved = false) {
  * Setup the data for the selected date
  * @param {JSON} dataToDisplay 
  */
-function setupDisplayedMoodLogs(dataToDisplay, isDataSaved = false) {
+function setupDisplayedMoodLogs(dataToDisplay, isDataSaved) {
 
     // If empty mood, push daily log
     // Reset to the appropriate pages - no need to maintain app state here.
-    if (dataToDisplay.mood == "") {
-        document.querySelector('#app-navigator').resetToPage('./views/daily_log.html', {
-            pop: true
-        });
+    // Problem here - if we select previous dates, the data will be empty
+    // reset to daily log only if the data is empty for today
+    if (dataToDisplay.mood == "" &&
+        getSummaryDateString(this.currentDisplayedDate) == getSummaryDateString(new Date())) {
+        document.querySelector('#app-navigator').resetToPage('./views/daily_log.html');
     } else {
         // If not empty, show the stats page
-        if (!isDataSaved)
+        if (!isDataSaved) {
             return;
+        }
 
         document.querySelector('#app-navigator').resetToPage('./views/stats.html', {
-            pop: true,
             data: {
-                subsequent_launch: true
+                is_first_launch: false
             }
         });
     }
@@ -86,15 +87,22 @@ function renderMonthlyMoodChart() {
         _dataVals.push({ x: new Date(item.date).getDate(), y: iconLookup_emoji[item.mood].val })
     })
 
+    // Sort the data values - ensure the data points are in order
+    _dataVals.sort((val1, val2) => {
+        return val2.x - val1.x;
+    })
+
     let _dataSet = {
         labels: _xLabels,
         datasets: [{
             label: 'Mood',
             data: _dataVals,
             fill: true,
-            borderColor: ['#329efc'],
-            borderWidth: 1,
-            tension: 0.1
+            borderColor: ['rgba(50, 158, 252, 1)'],
+            backgroundColor: ['rgba(50, 158, 252, 0.1)'],
+            borderWidth: 1.5,
+            tension: 0.1,
+            pointRadius: 3
         }]
     }
 
@@ -107,12 +115,28 @@ function renderMonthlyMoodChart() {
                 xAxisKey: 'x',
                 yAxisKey: 'y'
             },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                zoom: {
+                    zoom: {
+                        pinch: {
+                            enabled: false
+                        },
+                        mode: 'xy'
+                    }
+                }
+            },
             scales: {
                 yAxes: {
                     distribution: 'series',
                     ticks: {
                         align: 'center',
                         autoSkip: false,
+                        font: {
+                            size: 16
+                        },
                         min: 0,
                         max: 6,
                         stepSize: 1,
@@ -147,6 +171,7 @@ function renderMonthlyMoodChart() {
     breakdownChart = new Chart(_chartAreaMonthlyMood, config)
 }
 
+
 /**
  * Render mood count
  */
@@ -175,7 +200,16 @@ function renderMoodCount() {
         type: 'doughnut',
         data: _dataSet,
         options: {
-            animation: false
+            animation: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        font: {
+                            size: 15
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -183,7 +217,6 @@ function renderMoodCount() {
         moodCountChart.destroy();
     }
 
-    console.log(`Mood Count Config : ${JSON.stringify(configMoodCount)}`)
     moodCountChart = new Chart(_chartAreaMoodCount, configMoodCount)
 }
 

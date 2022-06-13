@@ -41,7 +41,7 @@ function getFilteredMoodData(dateToFetch) {
         }
     }
 
-    console.log(`Getting filtered data for : ${dateToFetch}`)
+    // console.log(`Getting filtered data for : ${dateToFetch}`)
     this.appData.logged_moods.every(item => {
         if (getSummaryDateString(dateToFetch) == item.date) {
             Object.assign(filteredData, item);
@@ -66,7 +66,7 @@ function getFilteredMoodData(dateToFetch) {
 function getAppData() {
 
     let fileData = DelUtils.getAppData(this.appId);
-    console.log(`getAppData read data : ${fileData}`);
+    // console.log(`getAppData read data : ${fileData}`);
 
     if ("undefined" === JSON.stringify(fileData)) {
         console.log(`File contains undefined content. Reinitializing.`);

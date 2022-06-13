@@ -7,17 +7,18 @@
 /**
  * Manage dates and displayed content
  */
- function getSummaryDateString(currentDisplayedDate, addTimeOfDay = false, onlyTime = false) {
+function getSummaryDateString(currentDisplayedDate, addTimeOfDay = false, onlyTime = false) {
     let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var date = new Date(currentDisplayedDate);
 
     var formattedTimestamp = "";
 
-    if(!onlyTime) {
+    if (!onlyTime) {
+
         formattedTimestamp = days[date.getDay(date)] + ", "
-        + months[date.getMonth()] + ' ' + date.getDate() + ", "
-        + date.getFullYear();
+            + months[date.getMonth()] + ' ' + date.getDate() + ", "
+            + date.getFullYear();
     }
 
     if (addTimeOfDay) {
@@ -28,25 +29,42 @@
     return formattedTimestamp.trim();
 }
 
+function getPrettifiedDateString(currentDisplayedDate) {
+    var date = new Date(currentDisplayedDate);
+    let today = new Date();
+
+    var formattedTimestamp = getSummaryDateString(currentDisplayedDate);
+
+    if (date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()) {
+        if (date.getDate() == today.getDate()) {
+            formattedTimestamp = "Today, " + formattedTimestamp;
+        } else if (date.getDate() == today.getDate() - 1) {
+            formattedTimestamp = "Yesterday, " + formattedTimestamp;
+        } else if (date.getDate() == today.getDate() + 1) {
+            formattedTimestamp = "Tomorrow, " + formattedTimestamp;
+        }
+    }
+    return formattedTimestamp.trim();
+}
 
 /**
  * Setup stored content from the previous day
  */
 function getPreviousDay() {
-    currentDisplayedDate.setDate(currentDisplayedDate.getDate() - 1);
-    document.getElementById("loggedDay").innerHTML = getSummaryDateString(currentDisplayedDate);
- 
-    // setupFilteredMoodData(getSummaryDateString(currentDisplayedDate));
+    this.currentDisplayedDate.setDate(this.currentDisplayedDate.getDate() - 1);
+    document.getElementById("loggedDay").innerHTML = getPrettifiedDateString(this.currentDisplayedDate);
+
+    setupFilteredMoodData(getSummaryDateString(currentDisplayedDate), false);
 }
 
 /**
  * Setup stored content from the 'next' day
  */
 function getNextDay() {
-    currentDisplayedDate.setDate(currentDisplayedDate.getDate() + 1);
-    document.getElementById("loggedDay").innerHTML = getSummaryDateString(currentDisplayedDate);
+    this.currentDisplayedDate.setDate(this.currentDisplayedDate.getDate() + 1);
+    document.getElementById("loggedDay").innerHTML = getPrettifiedDateString(this.currentDisplayedDate);
 
-    // setupFilteredMoodData(getSummaryDateString(currentDisplayedDate))
+    setupFilteredMoodData(getSummaryDateString(currentDisplayedDate), false)
 }
 
 /**
@@ -54,17 +72,17 @@ function getNextDay() {
  * @param {String} message 
  */
 function showToast(message) {
-    ons.notification.toast(message, {timeout: 1000, animation: 'ascend'})
+    ons.notification.toast(message, { timeout: 1000, animation: 'ascend' })
 }
 
 /**
  * Removes all child nodes from a node
  * @param {Element} viewRoot 
  */
- function cleanViewNode(viewRoot) {
+function cleanViewNode(viewRoot) {
 
     var child = viewRoot.lastElementChild;
-    while(child) {
+    while (child) {
         viewRoot.removeChild(child);
         child = viewRoot.lastElementChild;
     }
