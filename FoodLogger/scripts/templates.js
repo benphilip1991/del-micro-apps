@@ -41,5 +41,6 @@ let dayProgressTemplate = {
 var mealItem = {
     "timestamp": "",
     "item": "",
+    "quantity": "",
     "calories": ""
 }

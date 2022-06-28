@@ -5,6 +5,7 @@
         var mealList = [];
 
         function setPageTitle() {
+            // $.get("https://developer.edamam.com/attribution/badge.js");
             let data = document.querySelector("#app-navigator").topPage.data;
             document.querySelector("#meal-cat").innerHTML = `Log ${data.title} (${data.date})`;
         }
@@ -18,12 +19,43 @@
                 console.log(`Injected Meals List --------> ${JSON.stringify(data.loggedMealData)}`)
 
                 data.loggedMealData.forEach((item, index) => {
+                    mealList.push(item);
                     listPastLoggedItems(item.item, item.calories, index);
                 });
             }
         }
 
-        // Add item to the list of 
+        // Search for food item from the Edamam database
+        async function searchMealItem(foodItem) {
+
+            cleanViewNode(document.querySelector("#searched_meal_list"));
+
+            var nutrition = await getNutritionInformation(foodItem);
+
+            if (nutrition.status == 200) {
+                let searchedMealNode = getSearchedMealItemNode(nutrition.foodItems);
+                document.querySelector('#searched_meal_list').appendChild(searchedMealNode);
+                document.querySelector("#searched_meal_item_container").style = "display: block";
+            }
+        }
+
+        // Remove previously logged meal item
+        function removeLoggedMealItem(itemIndex) {
+            mealList.splice(itemIndex, 1);
+
+            cleanViewNode(document.querySelector("#logged_meal_list"));
+            mealList.forEach((item, index) => {
+                listPastLoggedItems(item.item, item.calories, index);
+            })
+        }
+
+        // Append searched meal item
+        function addSearchedMealItem(searchedItemLabel, searchedItemCals) {
+            mealList = addMealItem(searchedItemLabel, searchedItemCals, mealList);
+            cleanViewNode(document.querySelector("#searched_meal_list"));
+        }
+
+        // Add item to the list of logged items
         function addItem() {
             let mealItem = document.querySelector("#meal_item");
             let mealCals = document.querySelector("#cals");
@@ -54,9 +86,22 @@
     </ons-toolbar>
 
     <p style="text-align: center; margin-top: 10px;">
-        <ons-search-input id="breakfast_search_bar" modifier="material" style="width:90%" placeholder="Search for food">
+        <ons-search-input id="food_search_bar" modifier="material" onchange="searchMealItem(this.value)" style="width:90%" placeholder="Search for food">
         </ons-search-input>
     </p>
+
+    <!-- List meal search results -->
+    <div class="meal-blocks" id="searched_meal_item_container" style="display: none;">
+        <ons-list>
+            <ons-list-item>
+                <div class="section">
+                    <p><b>Searched items (tap to add): </b></p>
+                </div>
+            </ons-list-item>
+            <div id="searched_meal_list"></div>
+        </ons-list>
+    </div>
+
 
     <!-- Main Meals logger section. Can follow MyFitnessPal and show history - todo later -->
     <!-- Just input and calorie value as text entries for now - will need to add more -->
@@ -64,42 +109,59 @@
         <ons-list>
             <ons-list-item>
                 <div class="section">
-                    <p><b>Logged items: </b></p>
+                    <p><b>Logged items (tap to delete): </b></p>
                 </div>
             </ons-list-item>
             <div id="logged_meal_list"></div>
         </ons-list>
     </div>
 
+    <!-- Manually add meal item -->
     <div class="meal-blocks">
-        <ons-row style="padding: 20px; margin-top: 3vh;">
-            <ons-col width="25%">
-                <label>Item : </label>
-            </ons-col>
-            <ons-col width="75%">
-                <ons-input id="meal_item" modifier="material"></ons-input>
-            </ons-col>
-        </ons-row>
-        <ons-row style="padding: 20px; margin-bottom: 2vh;">
-            <ons-col width="25%">
-                <label>Calories : </label>
-            </ons-col>
-            <ons-col width="75%">
-                <ons-input id="cals" type="number"></ons-input>
-            </ons-col>
-        </ons-row>
-        <ons-row>
-            <ons-col style="padding:2px; width:50%">
-                <ons-button modifier="quiet" onclick="addItem()">Add</ons-button>
-            </ons-col>
-        </ons-row>
+        <ons-list>
+            <ons-list-item expandable style="background-color: inherit;">
+                <div class="section">
+                    <p><b>Add Item Manually</b></p>
+                </div>
+                <!-- class expandable content - very important. Onsen uses this to expand -->
+                <div class="expandable-content" id="snacks_list" style="background-color: inherit;">
+                    <ons-row style="padding: 20px;">
+                        <ons-col width="25%">
+                            <label>Item : </label>
+                        </ons-col>
+                        <ons-col width="75%">
+                            <ons-input id="meal_item" modifier="material"></ons-input>
+                        </ons-col>
+                    </ons-row>
+                    <ons-row style="padding: 20px; margin-bottom: 2vh;">
+                        <ons-col width="25%">
+                            <label>Calories : </label>
+                        </ons-col>
+                        <ons-col width="75%">
+                            <ons-input id="cals" type="number"></ons-input>
+                        </ons-col>
+                    </ons-row>
+                    <ons-row>
+                        <ons-col style="padding:2px; width:50%">
+                            <ons-button modifier="quiet" onclick="addItem()">Add</ons-button>
+                        </ons-col>
+                    </ons-row>
+                </div>
+            </ons-list-item>
+        </ons-list>
     </div>
 
     <!-- Only save to file when done is pressed -->
-    <ons-row style="margin-top: 10vh">
+    <ons-row style="margin-top: 5vh">
         <ons-col width="95%">
             <ons-button modifier="large--cta" onclick="saveMeal()">Done</ons-button>
         </ons-col>
+    </ons-row>
+
+    <!-- Edamam attribution -->
+    <ons-row>
+        <!-- <div id="edamam-badge" data-color="transparent"></div> -->
+        <img src="https://developer.edamam.com/images/transparent.png">
     </ons-row>
 
 </ons-page>

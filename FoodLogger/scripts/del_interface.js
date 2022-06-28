@@ -11,7 +11,7 @@
  * The app won't keep a copy of all past records
  */
 function saveDataToContainer(dataToStore) {
-    console.log("Saving: " + JSON.stringify(dataToStore));
+    // console.log("Saving: " + JSON.stringify(dataToStore));
     DelUtils.setAppData(this.appId, JSON.stringify(dataToStore));
 
     //forces refresh of the appData object
@@ -65,7 +65,7 @@ function getFilteredMealData(dateToFetch) {
 function getAppData() {
 
     let fileData = DelUtils.getAppData(this.appId);
-    console.log(`getAppData read data : ${fileData}`);
+    // console.log(`getAppData read data : ${fileData}`);
 
     if ("undefined" === JSON.stringify(fileData)) {
         console.log(`File contains undefined content. Reinitializing.`);

@@ -94,9 +94,14 @@ document.addEventListener('tap', (event) => {
     let item = event.target
 
     // Only possible from the add/edit meals page
-    // Set the elements with the values
+    // Add or delete list items as appropriate
     if(item.matches(".loggedItem")) {
-        showToast(`Item tapped : ${JSON.stringify(item.getAttribute("itemIndex"))}`)
+        showToast(`Deleted : ${JSON.stringify(item.getAttribute("mealItemValue"))}`)
+        removeLoggedMealItem(item.getAttribute("itemIndex"));
+
+    } else if(item.matches(".searchedItem")) {
+        showToast(`Adding ${item.getAttribute("mealItemValue")}`)
+        addSearchedMealItem(item.getAttribute("mealItemValue"), item.getAttribute("mealCalsValue"));
     }
 })
 
